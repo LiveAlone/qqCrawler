@@ -1,4 +1,4 @@
-package org.yqj.boot.demo;
+package org.qingqing.crawler.demo;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.ansi.AnsiColor;
