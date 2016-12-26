@@ -15,6 +15,16 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
+    public static String findFirst(String source, List<Pattern> patterns){
+        for (Pattern pattern : patterns) {
+            String s = findFirst(source, pattern);
+            if (s != null){
+                return s;
+            }
+        }
+        return null;
+    }
+
     public static String findFirst(String source, Pattern pattern){
         Matcher matcher = pattern.matcher(source);
         if (matcher.find()){
@@ -30,6 +40,10 @@ public class StringUtil {
             result.add(matcher.group());
         }
         return result;
+    }
+
+    public static String getScriptValContent(String input){
+        return input.substring(input.indexOf("val('")+5, input.indexOf("');"));
     }
 
     private static String FILENAME = "filename=";

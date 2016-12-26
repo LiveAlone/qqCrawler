@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -50,7 +51,9 @@ public class CookiesManager {
 
     public String formatCookies(){
         StringBuilder sb = new StringBuilder();
-        cookies.entrySet().forEach(cookie->sb.append(cookie.getKey()).append("=").append(cookie.getValue()).append("; "));
+        for (Entry<String, String> cookie : cookies.entrySet()) {
+            sb.append(cookie.getKey()).append("=").append(cookie.getValue()).append("; ");
+        }
         return sb.toString();
     }
 
@@ -58,12 +61,15 @@ public class CookiesManager {
     public String toString() {
         final StringBuffer sb = new StringBuffer();
         sb.append(" cookies:{ ");
-        cookies.entrySet().forEach(bi->
-            sb.append("  key : ").append(bi.getKey()).append(" value: ").append(bi.getValue()).append(" \n"));
+        for (Entry<String, String> bi : cookies.entrySet()) {
+            sb.append("  key : ").append(bi.getKey()).append(" value: ").append(bi.getValue()).append(" \n");
+        }
         sb.append(" } ");
 
         sb.append(" tags:{ ");
-        tags.forEach(s->sb.append("  ").append(s).append("  "));
+        for (String s: tags) {
+            sb.append("  ").append(s).append("  ");
+        }
         sb.append(" }");
         return sb.toString();
     }

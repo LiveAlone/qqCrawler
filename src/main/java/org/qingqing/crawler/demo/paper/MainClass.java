@@ -6,11 +6,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.client.SystemDefaultCredentialsProvider;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HttpContext;
 import org.apache.poi.util.IOUtils;
 
 import java.io.File;
@@ -27,9 +30,16 @@ import java.util.regex.Pattern;
  */
 public class MainClass {
 
-    private static String loginUrl = "https://sso.zxxk.com/login";
+    // http client proxy content
+    private static HttpHost proxy = new HttpHost("119.29.60.138", 1081, "http");
 
-    private static String resourceUrl =  "http://download.zxxk.com/?UrlID=29&InfoID=5913085";
+    private static DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+
+    private static String loginUrl = "http://sso.zxxk.com/login";
+
+    private static String loginUrls = "https://sso.zxxk.com/login";
+
+    private static String resourceUrl =  "http://download.zxxk.com//?UrlID=29&InfoID=5920553";
 
     private static CookiesManager cookiesManager;
 
@@ -39,29 +49,18 @@ public class MainClass {
 
     public static void main(String[] args) throws Exception {
         System.out.println("test out condition");
-//        preLogin();
-//        login();
-        afterLoginUrl = "http://gw.open.zxxk.com/router?$method=xk.user.callback&curl=http://user.zxxk.com/default.aspx&ticket=ST-617713-vAoVWAaQ6gERSzMZTlqh-sso4.zxxk.com";
+        preLogin();
+        login();
         afterLoginContent1();
 //        afterLoginContent2();
 //        getResource();
         System.out.println(cookiesManager.toString());
-
-//        cookiesManager = new CookiesManager();
-        // first must content
-//        cookiesManager.setAttribute("xk.passport", "D15428460DE8C686B14839AADCC62280F5EEB88960FFB887FBABECFF489EBF0F3C4F9D232EA7220C383F9E453C009148FD939A423D22E38B4DAC0183E3947BCF722503B325D91D651BE8B20B523C2396B5D601421C1B1A102BCB9BA59AE6ABBCFD40FB67B44A4518266FFA1EBE84FAE1FC638B284CD93ADA7086EB8D5FA3811099D4A7734F51677EB8EB5D0BAE8CC4CC96F86376DC1084D844BCC532F1059F323847892B5AC010401CCD7AE2FBFA2DA267AD260161791B4392033A1F5FC9BFE52583DC7C63DD7D3943A56A7A2F981933123EAB36D678AA9BE5C3B83DE10DF43038298B821990A5B610B3BAE4798EC965750C92465BB457F1D1A6DBC3BECC803919091461F23CDC4F3EF047F1A2DC6F521663C4B32CEB3152F4F97A13894A89EEDE5DC899186C97B83AA6F893F5420341FB064B40904AB6DDA985E3A80D866DC122D5598307994D49CA9A64D1A3F71FAB38421EDA7FED07AC3E0982871D68BD2493CF745B833B2277099F67306407746CF8216859D081E53EA56312D5609BE5F69FA8BF38");
-//        cookiesManager.setAttribute("Hm_lvt_0e522924b4bbb2ce3f663e505b2f1f9c","1482582411");
-//        cookiesManager.setAttribute("Hm_lpvt_0e522924b4bbb2ce3f663e505b2f1f9c","1482585339");
-//        cookiesManager.setAttribute("xk.passport.uid","25283132");
-//        cookiesManager.setAttribute("ASP.NET_SessionId", "fc0lsr4ybsmh4smv4mgj2x33");
-
-//        getResource();
-
     }
 
     private static void preLogin() throws Exception{
         HttpGet httpGet = new HttpGet(loginUrl);
-        HttpResponse response = HttpClients.createDefault().execute(httpGet);
+        HttpClient httpClient = HttpClients.custom().setRoutePlanner(routePlanner).build();
+        HttpResponse response = httpClient.execute(httpGet);
 
         //add cookies
         cookiesManager = new CookiesManager();
@@ -77,8 +76,8 @@ public class MainClass {
 
     // user login save session cookies
     private static void login() throws Exception {
-        HttpPost httpPost = new HttpPost(loginUrl);
-
+        HttpPost httpPost = new HttpPost(loginUrls);
+        cookiesManager.setAttribute(HttpHeaderContants.SESSION, "7b404393-23be-4a34-ae10-15d619870877");
         httpPost.setHeader(new BasicHeader(HttpHeaderContants.Cookie, cookiesManager.gainSessionString()));
 
         // add entity
@@ -96,6 +95,7 @@ public class MainClass {
     }
 
     public static void afterLoginContent1() throws Exception {
+//        afterLoginUrl = "http://gw.open.zxxk.com/router?$method=xk.user.callback&curl=http://user.zxxk.com/default.aspx&ticket=ST-4929-LzjLfVwgxJMHhzE7RAFh-sso3.zxxk.com";
         HttpGet httpGet = new HttpGet(afterLoginUrl);
         httpGet.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
         httpGet.setHeader("Accept-Encoding","gzip, deflate");
@@ -105,7 +105,25 @@ public class MainClass {
         httpGet.setHeader("Upgrade-Insecure-Requests","1");
         httpGet.setHeader("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0");
 //        httpGet.setHeader(HttpHeaderContants.Cookie, cookiesManager.formatCookies());
-        HttpResponse response = HttpClients.createDefault().execute(httpGet);
+        HttpResponse response = HttpClients.custom().setRedirectStrategy(new DefaultRedirectStrategy(){
+            @Override
+            public boolean isRedirected(HttpRequest request, HttpResponse response, HttpContext context) throws ProtocolException {
+                boolean isRedirect=false;
+                try {
+                    isRedirect = super.isRedirected(request, response, context);
+                } catch (ProtocolException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                if (!isRedirect) {
+                    int responseCode = response.getStatusLine().getStatusCode();
+                    if (responseCode == 301 || responseCode == 302) {
+                        return true;
+                    }
+                }
+                return isRedirect;
+            }
+        }).build().execute(httpGet);
         for (Header header : response.getHeaders(HttpHeaderContants.Set_Cookie)) {
             cookiesManager.mergeSessionContent(header.getValue());
         }
@@ -164,6 +182,12 @@ public class MainClass {
 
         private static Pattern ltPattern = Pattern.compile(ltPatternString);
 
+        private static String randomPatternString = "name='myRandom']\"\\)\\.val\\('.{0,100}'\\);}";
+//
+        private static Pattern randomPattern = Pattern.compile(randomPatternString);
+
+        private static String myRandom;
+
         private String username;
 
         private String password;
@@ -175,6 +199,8 @@ public class MainClass {
             formParams.add(new BasicNameValuePair("lt", lt));
             formParams.add(new BasicNameValuePair("username", username));
             formParams.add(new BasicNameValuePair("password", password));
+            formParams.add(new BasicNameValuePair("rememberMe", "true"));
+            formParams.add(new BasicNameValuePair("myRandom", myRandom));
             return new UrlEncodedFormEntity(formParams, Consts.UTF_8);
         }
 
@@ -182,6 +208,16 @@ public class MainClass {
             this.eventId = StringUtil.gainInputValue(StringUtil.findFirst(source, eventIdPattern));
             this.execution = StringUtil.gainInputValue(StringUtil.findFirst(source, executionPattern));
             this.lt = StringUtil.gainInputValue(StringUtil.findFirst(source, ltPattern));
+            this.myRandom = StringUtil.getScriptValContent(StringUtil.findFirst(source, randomPattern));
+
+        }
+
+        public static String getMyRandom() {
+            return myRandom;
+        }
+
+        public static void setMyRandom(String myRandom) {
+            LoginRequestForm.myRandom = myRandom;
         }
 
         public String getEventId() {
