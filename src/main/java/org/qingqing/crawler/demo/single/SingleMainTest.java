@@ -4,21 +4,27 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharSink;
 import com.google.common.io.Files;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.poi.util.IOUtils;
 import org.apache.tools.ant.taskdefs.EchoXML;
 import org.qingqing.crawler.demo.paper.CookiesManager;
 import org.qingqing.crawler.demo.paper.HttpHeaderContants;
 import org.qingqing.crawler.demo.paper.StringUtil;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 /**
@@ -28,7 +34,7 @@ public class SingleMainTest {
 
     private static String xpPassword = "";
 
-    private static String basicUrl = "http://search.zxxk.com/Search1.aspx?keyword=&typeid=1&year=2017&isfree=1&orderby=score&pagesize=10&isprecise=0&onlytitle=1&dontsave=0&SelectTypeID=3&page=";
+    private static String basicUrl = "http://search.zxxk.com/Search1.aspx?keyword=&typeid=1&provinceid=4&year=2016&isfree=1&orderby=score&pagesize=10&isprecise=0&onlytitle=1&dontsave=0&SelectTypeID=3&page=";
 
     private static Integer totalPage = 30;
 
@@ -38,25 +44,100 @@ public class SingleMainTest {
 
     private static Integer page = 0;
 
+    private static List<DefaultProxyRoutePlanner> planners = Lists.newArrayList();
+
+    static {
+        planners.add(new DefaultProxyRoutePlanner(new HttpHost("119.29.60.138", 1081)));
+        planners.add(new DefaultProxyRoutePlanner(new HttpHost("119.29.4.212", 1081)));
+        planners.add(new DefaultProxyRoutePlanner(new HttpHost("115.159.185.221", 1081)));
+        planners.add(new DefaultProxyRoutePlanner(new HttpHost("123.206.52.180", 1081)));
+        planners.add(new DefaultProxyRoutePlanner(new HttpHost("123.206.52.123", 1081)));
+        planners.add(new DefaultProxyRoutePlanner(new HttpHost("115.159.188.177", 1081)));
+    }
+
     public static void main(String[] args) throws Exception{
-
         FileWriter fileWriter = new FileWriter(new File(logFile), true);
-        for (int i = 1; i<=30; i++){
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("target.txt")));
 
-            String realUrl = basicUrl + i;
-            page = i;
-            List<String> result = analysePagedAnalyseUrl(getPageContent(realUrl));
-            fileWriter.append("current page is " + page);
-            for (String s : result) {
-                try {
-                    getResource(analyseDownloadPageContent(getPageContent(s)));
-                    fileWriter.append("SUCCESS " + s + "\n");
-                }catch (Exception e){
-                    fileWriter.append("ERROR  "+ s + "\n");
+        while (true){
+            String current = bufferedReader.readLine();
+            if (current == null){
+                break;
+            }
+
+            Boolean status = false;
+            String basicUrl = "";
+            if (current.contains("current")){
+                page = Integer.valueOf(current.substring(current.length()-1, current.length()));
+                if (page !=7 && page !=8)
+                    break;
+                fileWriter.append("current page is " + page + "\n");
+                continue;
+            }else {
+                if (current.contains("ERROR")){
+                    status=false;
+                    basicUrl = current.split(" ")[1];
+                }else {
+                    status = true;
+                    basicUrl = current.split(" ")[1];
                 }
             }
+
+            if (status){
+                fileWriter.append("JUMP " + basicUrl + "\n");
+                continue;
+            }
+
+            String basicUrlConvert = convertUrl(basicUrl);
+            try {
+                getResource(analyseDownloadPageContent(getPageContent(basicUrlConvert)));
+                fileWriter.append("SUCCESS " + basicUrlConvert + "\n");
+                Thread.sleep(10000);
+            }catch (Exception e){
+                fileWriter.append("ERROR "+ basicUrlConvert + "\n");
+            }
+
         }
-        System.out.println("测试环境的配置方式");
+
+        fileWriter.close();
+        bufferedReader.close();
+    }
+
+    public static void originalLoadContent() throws Exception{
+//        FileWriter fileWriter = new FileWriter(new File(logFile), true);
+//        for (int i = 1; i<=30; i++){
+//
+//            String realUrl = basicUrl + i;
+//            page = i;
+//            List<String> result = analysePagedAnalyseUrl(getPageContent(realUrl));
+//            fileWriter.append("current page is " + page + "\n");
+//            for (String s : result) {
+//                try {
+//                    getResource(analyseDownloadPageContent(getPageContent(s)));
+//                    fileWriter.append("SUCCESS " + s + "\n");
+//                    Thread.sleep(5000);
+//                }catch (Exception e){
+//                    fileWriter.append("ERROR "+ s + "\n");
+//                }
+//            }
+//        }
+//        fileWriter.close();
+//        System.out.println("测试环境的配置方式");
+    }
+
+    private static String convertUrl(String originUrl){
+        if (originUrl.contains("http://sx.zxxk.com/soft/")
+                || originUrl.contains("http://sw.zxxk.com/soft/")
+                || originUrl.contains("http://yy.zxxk.com/soft/")
+                || originUrl.contains("http://wl.zxxk.com/soft/")
+                || originUrl.contains("http://dl.zxxk.com/soft/")
+                || originUrl.contains("http://zz.zxxk.com/soft/")
+                || originUrl.contains("http://hx.zxxk.com/soft/")
+                || originUrl.contains("http://ls.zxxk.com/soft/")){
+            return originUrl.replaceFirst("soft/", "s");
+        }
+
+        return null;
     }
 
     private static void getResource(String resourceUrl) throws Exception{
@@ -70,7 +151,7 @@ public class SingleMainTest {
 //        cookiesManager.setAttribute("ASP.NET_SessionId", "fc0lsr4ybsmh4smv4mgj2x33");
 
         httpGet.setHeader(HttpHeaderContants.Cookie,cookiesManager.formatCookies());
-        HttpResponse response = HttpClients.createDefault().execute(httpGet);
+        HttpResponse response = createRandomClient().execute(httpGet);
         System.out.println(response.getStatusLine());
 
         String filenameSource = StringUtil.gainHeaderFileName(response.getHeaders(HttpHeaderContants.Content_Disposition)[0].getValue());
@@ -84,20 +165,39 @@ public class SingleMainTest {
         outputStream.write(IOUtils.toByteArray(response.getEntity().getContent()));
 
         outputStream.close();
-        Thread.sleep(5000);
     }
 
+    static List<Pattern> relPattern = Lists.newArrayList(
+            Pattern.compile("<a data-xop-login id=\"goDownload\" href=\".{0,100}\" rel=\"nofollow\""),
+            Pattern.compile("<a data-xop-login class=\"down-btn\" target=\"_blank\" href=\".{0,100}\" rel=\"nofollow\""),
+            Pattern.compile("<a data-xop-login href=\".{0,100}\" rel=\"nofollow\" id=\"goDownload\" data-download"));
+
+    static List<Pattern> dataDownload = Lists.newArrayList(
+            Pattern.compile("<a data-xop-login id=\"goDownload\" rel=\"nofollow\" href=\".{0,100}\" data-download"),
+            Pattern.compile("<a data-xop-login id=\"goDownload\" href=\".{0,100}\" data-download"));
+
+    static List<Pattern> idStart = Lists.newArrayList(
+            Pattern.compile("<a data-xop-login href=\".{0,100}\" id=\""));
+
     private static String analyseDownloadPageContent(String content) throws Exception{
-        List<Pattern> patterns = Lists.newArrayList(
-                Pattern.compile("<a data-xop-login id=\"goDownload\" href=\".{0,100}\" rel=\"nofollow\""),
-                Pattern.compile("<a data-xop-login class=\"down-btn\" target=\"_blank\" href=\".{0,100}\" rel=\"nofollow\""),
-                Pattern.compile("<a data-xop-login href=\".{0,100}\" rel=\"nofollow\" id=\"goDownload\" data-download"));
-        String s = StringUtil.findFirst(content, patterns);
-        if (s==null){
-            System.out.println("not find page content");
-            return "";
+
+        String s = StringUtil.findFirst(content, relPattern);
+        if (s!=null){
+            return s.substring(s.indexOf("href")+6, s.indexOf("\" rel=\""));
         }
-        return s.substring(s.indexOf("href")+6, s.indexOf("\" rel"));
+
+        s = StringUtil.findFirst(content, dataDownload);
+        if (s!=null){
+            return s.substring(s.indexOf("href")+6, s.indexOf("\" data-download"));
+        }
+
+        s = StringUtil.findFirst(content, idStart);
+        if (s!=null){
+            return s.substring(s.indexOf("href")+6, s.indexOf("\" id=\""));
+        }
+
+        System.out.println("not find page content");
+        return "";
     }
 
     private static List<String> analysePagedAnalyseUrl(String content){
@@ -112,7 +212,12 @@ public class SingleMainTest {
 
     private static String getPageContent(String url) throws Exception{
         HttpGet httpGet = new HttpGet(url);
-        HttpResponse response = HttpClients.createDefault().execute(httpGet);
+        HttpResponse response = createRandomClient().execute(httpGet);
         return new String(IOUtils.toByteArray(response.getEntity().getContent()));
+    }
+
+    private static HttpClient createRandomClient(){
+        Integer result = ThreadLocalRandom.current().nextInt(6);
+        return HttpClients.custom().setRoutePlanner(planners.get(result)).build();
     }
 }

@@ -1,0 +1,77 @@
+current page is 1
+SUCCESS http://sx.zxxk.com/soft/5919857.html
+SUCCESS http://yw.zxxk.com/soft/5919070.html
+SUCCESS http://yw.zxxk.com/soft/5918298.html
+SUCCESS http://sx.zxxk.com/soft/5917921.html
+F404 http://sx.zxxk.com/soft/5917920.html
+SUCCESS http://yy.zxxk.com/soft/5913327.html
+SUCCESS http://yy.zxxk.com/soft/5915135.html
+SUCCESS http://yw.zxxk.com/soft/5912640.html
+SUCCESS http://yy.zxxk.com/soft/5909456.html
+SUCCESS http://wl.zxxk.com/soft/5908685.html
+current page is 2
+SUCCESS http://wl.zxxk.com/soft/5908683.html
+SUCCESS http://yy.zxxk.com/soft/5909390.html
+SUCCESS http://yw.zxxk.com/soft/5908991.html
+SUCCESS http://wl.zxxk.com/soft/5908688.html
+SUCCESS http://wl.zxxk.com/soft/5908687.html
+SUCCESS http://wl.zxxk.com/soft/5908686.html
+SUCCESS http://wl.zxxk.com/soft/5908684.html
+SUCCESS http://sx.zxxk.com/soft/5908065.html
+SUCCESS http://sw.zxxk.com/soft/5893677.html
+SUCCESS http://dl.zxxk.com/soft/5892922.html
+current page is 3
+SUCCESS http://dl.zxxk.com/s5892914.html
+SUCCESS http://dl.zxxk.com/s5892920.html
+JUMP http://hx.zxxk.com/soft/5892910.html
+SUCCESS http://dl.zxxk.com/s5892917.html
+SUCCESS http://dl.zxxk.com/s5892918.html
+SUCCESS http://dl.zxxk.com/s5892919.html
+SUCCESS http://dl.zxxk.com/s5892915.html
+SUCCESS http://ls.zxxk.com/s5892885.html
+SUCCESS http://ls.zxxk.com/s5892888.html
+JUMP http://hx.zxxk.com/soft/5892894.html
+current page is 4
+JUMP http://hx.zxxk.com/soft/5892897.html
+JUMP http://hx.zxxk.com/soft/5892900.html
+JUMP http://hx.zxxk.com/soft/5892909.html
+SUCCESS http://ls.zxxk.com/s5892892.html
+JUMP http://hx.zxxk.com/soft/5892903.html
+JUMP http://hx.zxxk.com/soft/5892905.html
+JUMP http://sw.zxxk.com/soft/5892874.html
+SUCCESS http://ls.zxxk.com/s5892880.html
+SUCCESS http://sw.zxxk.com/s5892873.html
+SUCCESS http://ls.zxxk.com/s5892882.html
+current page is 5
+SUCCESS http://sw.zxxk.com/soft/5892875.html
+SUCCESS http://ls.zxxk.com/soft/5892876.html
+SUCCESS http://ls.zxxk.com/soft/5892878.html
+SUCCESS http://sx.zxxk.com/soft/5892864.html
+SUCCESS http://sx.zxxk.com/soft/5892863.html
+SUCCESS http://sw.zxxk.com/soft/5892870.html
+SUCCESS http://sw.zxxk.com/soft/5892872.html
+SUCCESS http://sx.zxxk.com/soft/5892865.html
+SUCCESS http://sx.zxxk.com/soft/5892868.html
+SUCCESS http://sw.zxxk.com/soft/5892871.html
+current page is 6
+SUCCESS http://sx.zxxk.com/soft/5892866.html
+SUCCESS http://sx.zxxk.com/soft/5892869.html
+SUCCESS http://yy.zxxk.com/soft/5892850.html
+SUCCESS http://wl.zxxk.com/soft/5892861.html
+SUCCESS http://wl.zxxk.com/soft/5892857.html
+SUCCESS http://wl.zxxk.com/soft/5892858.html
+SUCCESS http://wl.zxxk.com/soft/5892859.html
+SUCCESS http://sx.zxxk.com/soft/5892862.html
+SUCCESS http://wl.zxxk.com/soft/5892860.html
+SUCCESS http://yy.zxxk.com/soft/5892851.html
+current page is 7
+SUCCESS http://yy.zxxk.com/soft/5892852.html
+SUCCESS http://wl.zxxk.com/soft/5892855.html
+SUCCESS http://yy.zxxk.com/soft/5892853.html
+SUCCESS http://yw.zxxk.com/soft/5892839.html
+SUCCESS http://yw.zxxk.com/soft/5892841.html
+SUCCESS http://yw.zxxk.com/soft/5892844.html
+SUCCESS http://yy.zxxk.com/soft/5892847.html
+SUCCESS http://yw.zxxk.com/soft/5892838.html
+SUCCESS http://yw.zxxk.com/soft/5892845.html
+SUCCESS http://zz.zxxk.com/soft/5892830.html

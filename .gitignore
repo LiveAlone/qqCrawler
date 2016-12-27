@@ -28,5 +28,7 @@ dependency-reduced-pom.xml
 *apidocs/
 *.versionsBackup
 *.perm
+free/
+free/.*
 flyway.properties
 _book/
