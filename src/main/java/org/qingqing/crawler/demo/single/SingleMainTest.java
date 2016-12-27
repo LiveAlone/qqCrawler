@@ -1,17 +1,23 @@
 package org.qingqing.crawler.demo.single;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
+import com.google.common.io.CharSink;
+import com.google.common.io.Files;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.poi.util.IOUtils;
+import org.apache.tools.ant.taskdefs.EchoXML;
 import org.qingqing.crawler.demo.paper.CookiesManager;
 import org.qingqing.crawler.demo.paper.HttpHeaderContants;
 import org.qingqing.crawler.demo.paper.StringUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -22,14 +28,33 @@ public class SingleMainTest {
 
     private static String xpPassword = "";
 
-    private static String basicUrl = "http://search.zxxk.com/Search1.aspx?keyword=&typeid=1&year=2017&isfree=1&orderby=score&pagesize=10&isprecise=0&onlytitle=1&dontsave=0&SelectTypeID=3";
+    private static String basicUrl = "http://search.zxxk.com/Search1.aspx?keyword=&typeid=1&year=2017&isfree=1&orderby=score&pagesize=10&isprecise=0&onlytitle=1&dontsave=0&SelectTypeID=3&page=";
 
     private static Integer totalPage = 30;
 
+    private static String logFile = "loadLog.txt";
+
+    private static String basicDir = "free/";
+
+    private static Integer page = 0;
+
     public static void main(String[] args) throws Exception{
-        List<String> result = analysePagedAnalyseUrl(getPageContent(basicUrl));
-        for (String s : result) {
-            getResource(analyseDownloadPageContent(getPageContent(s)));
+
+        FileWriter fileWriter = new FileWriter(new File(logFile), true);
+        for (int i = 1; i<=30; i++){
+
+            String realUrl = basicUrl + i;
+            page = i;
+            List<String> result = analysePagedAnalyseUrl(getPageContent(realUrl));
+            fileWriter.append("current page is " + page);
+            for (String s : result) {
+                try {
+                    getResource(analyseDownloadPageContent(getPageContent(s)));
+                    fileWriter.append("SUCCESS " + s + "\n");
+                }catch (Exception e){
+                    fileWriter.append("ERROR  "+ s + "\n");
+                }
+            }
         }
         System.out.println("测试环境的配置方式");
     }
@@ -52,12 +77,14 @@ public class SingleMainTest {
         String filename = URLDecoder.decode(filenameSource);
 
         System.out.println(filename);
-        File file = new File(filename);
+        File file = new File(basicDir + page + "/" + filename);
+        Files.createParentDirs(file);
 
         FileOutputStream outputStream = new FileOutputStream(file);
         outputStream.write(IOUtils.toByteArray(response.getEntity().getContent()));
 
         outputStream.close();
+        Thread.sleep(5000);
     }
 
     private static String analyseDownloadPageContent(String content) throws Exception{
