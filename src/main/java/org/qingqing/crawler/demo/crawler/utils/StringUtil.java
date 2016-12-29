@@ -1,4 +1,4 @@
-package org.qingqing.crawler.demo.paper;
+package org.qingqing.crawler.demo.crawler.utils;
 
 import com.google.common.collect.Lists;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -64,12 +64,5 @@ public class StringUtil {
         Integer startIndex = input.indexOf(VALUE) + VALUE_LENGTH;
         Integer endIndex = input.indexOf(COLON, startIndex + 1);
         return input.substring(startIndex, endIndex);
-    }
-
-    public static void main(String[] args) {
-        String source = "";
-        String regl = "<input type=\"hidden\" name=\"lt\" value=\".{0,100}\" />";
-        System.out.println(findFirst(source, Pattern.compile(regl)));
-
     }
 }

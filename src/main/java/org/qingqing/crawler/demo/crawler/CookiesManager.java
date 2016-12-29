@@ -1,6 +1,7 @@
-package org.qingqing.crawler.demo.paper;
+package org.qingqing.crawler.demo.crawler;
 
 import com.google.common.collect.Sets;
+import org.qingqing.crawler.demo.crawler.utils.HttpHeaderContants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

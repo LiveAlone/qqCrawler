@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class BootDemoApplication {
     public static void main(String[] args) {
-//        SpringApplication.run(BootDemoApplication.class, args);
         new SpringApplicationBuilder()
                 .banner(new DemoBanner())
                 .sources(BootDemoApplication.class)

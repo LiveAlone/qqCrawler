@@ -8,13 +8,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.http.impl.client.SystemDefaultCredentialsProvider;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.poi.util.IOUtils;
+import org.qingqing.crawler.demo.crawler.CookiesManager;
+import org.qingqing.crawler.demo.crawler.utils.HttpHeaderContants;
+import org.qingqing.crawler.demo.crawler.utils.StringUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,15 +48,15 @@ public class MainClass {
 
     private static String afterLoginUrl;
 
-    public static void main(String[] args) throws Exception {
-        System.out.println("test out condition");
-        preLogin();
-        login();
-        afterLoginContent1();
-//        afterLoginContent2();
-//        getResource();
-        System.out.println(cookiesManager.toString());
-    }
+//    public static void main(String[] args) throws Exception {
+//        System.out.println("test out condition");
+//        preLogin();
+//        login();
+//        afterLoginContent1();
+////        afterLoginContent2();
+////        getResource();
+//        System.out.println(cookiesManager.toString());
+//    }
 
     private static void preLogin() throws Exception{
         HttpGet httpGet = new HttpGet(loginUrl);

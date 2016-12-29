@@ -1,8 +1,6 @@
 package org.qingqing.crawler.demo.single;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
-import com.google.common.io.CharSink;
 import com.google.common.io.Files;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -11,10 +9,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.poi.util.IOUtils;
-import org.apache.tools.ant.taskdefs.EchoXML;
-import org.qingqing.crawler.demo.paper.CookiesManager;
-import org.qingqing.crawler.demo.paper.HttpHeaderContants;
-import org.qingqing.crawler.demo.paper.StringUtil;
+import org.qingqing.crawler.demo.crawler.CookiesManager;
+import org.qingqing.crawler.demo.crawler.utils.HttpHeaderContants;
+import org.qingqing.crawler.demo.crawler.utils.StringUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,7 +19,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
@@ -57,10 +53,10 @@ public class SingleMainTest {
         planners.add(new DefaultProxyRoutePlanner(new HttpHost("115.159.188.177", 1081)));
     }
 
-    public static void main(String[] args) throws Exception{
-//        originalLoadContent();
-        targetFileLoad();
-    }
+//    public static void main(String[] args) throws Exception{
+////        originalLoadContent();
+//        targetFileLoad();
+//    }
 
     public static void originalLoadContent() throws Exception{
         FileWriter fileWriter = new FileWriter(new File(logFile), true);

@@ -1,4 +1,4 @@
-package org.qingqing.crawler.demo.paper;
+package org.qingqing.crawler.demo.crawler.utils;
 
 /**
  * Created by yaoqijun.
