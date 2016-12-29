@@ -10,6 +10,11 @@ import java.util.List;
  */
 public class PagedUrl {
 
+    /**
+     * right url fuck ...............
+     * http://search.zxxk.com/Search1.aspx?keyword=&typeid=1&provinceid=4&year=2017&isfree=1&orderby=score&pagesize=10&isprecise=0&onlytitle=1&dontsave=0&SelectTypeID=3
+     */
+
     private static final Logger logger = LoggerFactory.getLogger(PagedUrl.class);
 
     private static final String isFreeTag = "&isfree=1";
@@ -153,12 +158,21 @@ public class PagedUrl {
             this.filename = filename;
         }
 
+        public static FileLoadResult from(String content){
+            String[] contents = content.split(" ");
+            if (contents.length != 3){
+                logger.error("load log string convert error, content:{}", content);
+                throw new IllegalArgumentException("load data convert error");
+            }
+            return new FileLoadResult(contents[0]=="SUCCESS", contents[1], contents[2]);
+        }
+
         public FileLoadResult() {
         }
 
         @Override
         public String toString() {
-            return isSuccess?"SUCCESS ":"ERROR " + path + " " + filename;
+            return (isSuccess?"SUCCESS ":"ERROR ") + path + " " + filename;
         }
 
         public Boolean getSuccess() {

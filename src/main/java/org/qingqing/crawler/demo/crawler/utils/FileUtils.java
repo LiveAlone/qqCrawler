@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Created by yaoqijun on 2016/12/29.
@@ -32,14 +33,32 @@ public class FileUtils {
         }
     }
 
+    public static List<String> readAllLines(File file){
+        try {
+            if (!file.exists()){
+                return new ArrayList<>(0);
+            }
+            return Files.readLines(file, Charsets.UTF_8);
+        }catch (IOException e){
+            logger.error("load all lines error");
+            return new ArrayList<>(0);
+        }
+    }
+
     public static void tryDeleteFile(String path){
         File f = new File(path);
-        f.deleteOnExit();
+        if (f.exists()){
+            f.delete();
+        }
     }
 
     public static void appendFileContent(String path, String content){
         try {
-            Files.append(content, new File(path), Charsets.UTF_8);
+            File f = new File(path);
+            if (!f.exists()){
+                f.createNewFile();
+            }
+            Files.append(content, f, Charsets.UTF_8);
         }catch (IOException e){
             logger.error("append file error e:{}", e);
         }

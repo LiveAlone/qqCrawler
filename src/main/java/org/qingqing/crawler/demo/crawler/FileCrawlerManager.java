@@ -2,12 +2,15 @@ package org.qingqing.crawler.demo.crawler;
 
 import org.apache.poi.common.usermodel.LineStyle;
 import org.qingqing.crawler.demo.crawler.domain.PagedUrl;
+import org.qingqing.crawler.demo.crawler.domain.PagedUrl.FileLoadResult;
 import org.qingqing.crawler.demo.crawler.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,12 +66,56 @@ public class FileCrawlerManager {
                 }
                 FileUtils.appendFileContent(
                         targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG),
-                        new PagedUrl.FileLoadResult(filename == null, fileUrl, filename == null?"NONE":filename).toString());
+                        new PagedUrl.FileLoadResult(filename != null, fileUrl, filename == null?"NONE":filename).toString() + "\n");
             }
         }
     }
 
     public void loadErrorFile(){
+
+        // get config
+        List<String> targetPages = myConfiguration.getTargetPage();
+        if (targetPages==null || targetPages.isEmpty()){
+            logger.warn("target paged url is empty");
+        }
+
+        for (String targetPage : targetPages) {
+            PagedUrl targetPageUrl = PagedUrl.convertPagedUrl(targetPage);
+
+            if (targetPageUrl == null){
+                logger.info("target paged url analyse fail");
+                continue;
+            }
+
+            // load error content
+            File loadLogFile = new File(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG));
+            List<String> loadLogFileStrings = FileUtils.readAllLines(loadLogFile);
+            List<FileLoadResult> loadResults = new ArrayList<>(loadLogFileStrings.size());
+            for (String loadLogFileString : loadLogFileStrings) {
+                loadResults.add(FileLoadResult.from(loadLogFileString));
+            }
+
+            // load data
+            for (FileLoadResult loadResult : loadResults) {
+                if (!loadResult.getSuccess()){
+                    String filename = fileCrawlerService.loadRealFile(targetPageUrl, loadResult.getPath());
+                    if (filename == null){
+                        logger.info("error load file, file url :{}", loadResult.getPath());
+                    }else {
+                        logger.info("success load file, file :{}", filename);
+                        loadResult.setSuccess(true);
+                        loadResult.setFilename(filename);
+                    }
+                }
+            }
+
+            // refresh content
+            FileUtils.tryDeleteFile(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG));
+            for (FileLoadResult loadResult : loadResults) {
+                FileUtils.appendFileContent(
+                        targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG), loadResult.toString() + "\n");
+            }
+        }
 
     }
 }
