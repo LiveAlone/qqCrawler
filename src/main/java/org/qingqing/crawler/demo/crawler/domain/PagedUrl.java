@@ -1,5 +1,6 @@
 package org.qingqing.crawler.demo.crawler.domain;
 
+import org.qingqing.crawler.demo.crawler.MyConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,11 +136,13 @@ public class PagedUrl {
         this.pagedUrl = pagedUrl;
     }
 
-    public String formatPathUrl(String fileName){
-        return new StringBuilder(province)
+    public String formatPathUrl(String fileName, MyConfiguration myConfiguration){
+        String provinceString = myConfiguration.getCityMap().get(getProvince());
+        String cateString = myConfiguration.getCateMap().get(getCate());
+        return new StringBuilder(provinceString == null ? "unknow" : provinceString)
                 .append("/").append(year)
-                .append("/").append(charge)
-                .append("/").append(cate)
+                .append("/").append(charge.equals("0") ? "免费" : "收费")
+                .append("/").append(cateString == null ? "unknow" : cateString )
                 .append("/").append(fileName)
                 .toString();
     }
@@ -164,7 +167,7 @@ public class PagedUrl {
                 logger.error("load log string convert error, content:{}", content);
                 throw new IllegalArgumentException("load data convert error");
             }
-            return new FileLoadResult(contents[0]=="SUCCESS", contents[1], contents[2]);
+            return new FileLoadResult(contents[0].equals("SUCCESS"), contents[1], contents[2]);
         }
 
         public FileLoadResult() {

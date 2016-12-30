@@ -1,9 +1,11 @@
 package org.qingqing.crawler.demo.crawler;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yaoqijun on 2016/12/29.
@@ -27,6 +29,10 @@ public class MyConfiguration {
     private List<String> regular;
 
     private List<String> targetPage;
+
+    private Map<String, String> cityMap;
+
+    private Map<String, String> cateMap;
 
     public List<String> getProxy() {
         return proxy;
@@ -58,5 +64,21 @@ public class MyConfiguration {
 
     public void setTargetPage(List<String> targetPage) {
         this.targetPage = targetPage;
+    }
+
+    public Map<String, String> getCityMap() {
+        return cityMap;
+    }
+
+    public void setCityMap(Map<String, String> cityMap) {
+        this.cityMap = cityMap;
+    }
+
+    public Map<String, String> getCateMap() {
+        return cateMap;
+    }
+
+    public void setCateMap(Map<String, String> cateMap) {
+        this.cateMap = cateMap;
     }
 }

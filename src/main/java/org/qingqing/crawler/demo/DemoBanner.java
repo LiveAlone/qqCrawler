@@ -16,18 +16,7 @@ import java.io.PrintStream;
  */
 public class DemoBanner implements Banner{
 
-    private static final String[] BANNER = {
-            "",
-            "",
-            "_____.___.  _____   ________   ________  .___     ____.____ __________   ",
-            "\\__  |   | /  _  \\  \\_____  \\  \\_____  \\ |   |   |    |    |   \\      \\  ",
-            " /   |   |/  /_\\  \\  /   |   \\  /  / \\  \\|   |   |    |    |   /   |   \\ ",
-            " \\____   /    |    \\/    |    \\/   \\_/.  \\   /\\__|    |    |  /    |    \\",
-            " / ______\\____|__  /\\_______  /\\_____\\ \\_/___\\________|______/\\____|__  /",
-            " \\/              \\/         \\/        \\__>                            \\/ ",
-            "",
-            ""
-    };
+    private static final String[] BANNER = {};
 
     private static final String SPRING_BOOT = " :: Powered by Personal.inc :: ";
 

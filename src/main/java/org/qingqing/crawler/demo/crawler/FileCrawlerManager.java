@@ -54,8 +54,8 @@ public class FileCrawlerManager {
             }
 
             // save pageSize condition
-            FileUtils.overwriteFile(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_URL), fileUrls);
-            FileUtils.tryDeleteFile(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG));
+            FileUtils.overwriteFile(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_URL, myConfiguration), fileUrls);
+            FileUtils.tryDeleteFile(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG, myConfiguration));
 
             for (String fileUrl : fileUrls) {
                 String filename = fileCrawlerService.loadRealFile(targetPageUrl, fileUrl);
@@ -65,7 +65,7 @@ public class FileCrawlerManager {
                     logger.info("success load file, file :{}", filename);
                 }
                 FileUtils.appendFileContent(
-                        targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG),
+                        targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG, myConfiguration),
                         new PagedUrl.FileLoadResult(filename != null, fileUrl, filename == null?"NONE":filename).toString() + "\n");
             }
         }
@@ -88,8 +88,12 @@ public class FileCrawlerManager {
             }
 
             // load error content
-            File loadLogFile = new File(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG));
+            File loadLogFile = new File(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG, myConfiguration));
             List<String> loadLogFileStrings = FileUtils.readAllLines(loadLogFile);
+            if (loadLogFileStrings==null || loadLogFileStrings.isEmpty()){
+                logger.warn("no error record found, path is :{}", targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG, myConfiguration));
+                return;
+            }
             List<FileLoadResult> loadResults = new ArrayList<>(loadLogFileStrings.size());
             for (String loadLogFileString : loadLogFileStrings) {
                 loadResults.add(FileLoadResult.from(loadLogFileString));
@@ -110,10 +114,10 @@ public class FileCrawlerManager {
             }
 
             // refresh content
-            FileUtils.tryDeleteFile(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG));
+            FileUtils.tryDeleteFile(targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG, myConfiguration));
             for (FileLoadResult loadResult : loadResults) {
                 FileUtils.appendFileContent(
-                        targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG), loadResult.toString() + "\n");
+                        targetPageUrl.formatPathUrl(MyConfiguration.FILE_LOAD_LOG, myConfiguration), loadResult.toString() + "\n");
             }
         }
 

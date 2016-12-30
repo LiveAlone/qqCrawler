@@ -70,4 +70,4 @@ QingQing 试卷模板内容的抓取方式
     LoadFileUrl.txt 解析Paged 页面后 Loader 的Url
     LoadLog.txt 对应的解析已经Load的页面信息, 重复执行获取其中的ERROR 执行方式.
     
-    
+3. 启动指定参数, total（load 对应的任务内容）, error_reload 上次load 错误内容
