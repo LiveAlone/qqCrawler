@@ -22,6 +22,8 @@ public class MyConfiguration {
 
     public static final String FILE_LOAD_LOG = "LoadLog.txt";
 
+    private String version;
+
     private List<String> proxy;
 
     private List<String> xp;
@@ -80,5 +82,13 @@ public class MyConfiguration {
 
     public void setCateMap(Map<String, String> cateMap) {
         this.cateMap = cateMap;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

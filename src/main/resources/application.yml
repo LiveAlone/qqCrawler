@@ -1,8 +1,10 @@
 logging:
+  file: log.file
   level:
     root: INFO
 
 qingqing:
+  version: 1.0.0
   proxy:
     - 119.29.60.138:1081
     - 119.29.4.212:1081

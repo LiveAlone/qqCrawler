@@ -1,0 +1,11 @@
+2016-12-30 13:55:42.932  INFO 180936 --- [main] o.q.crawler.demo.BootDemoApplication     : Starting BootDemoApplication on Yaoqijun-PC with PID 180936 (E:\personal\qqCrawler\target\classes started by yaoqijun in E:\personal\qqCrawler)
+2016-12-30 13:55:42.934  INFO 180936 --- [main] o.q.crawler.demo.BootDemoApplication     : No active profile set, falling back to default profiles: default
+2016-12-30 13:55:42.974  INFO 180936 --- [main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@352ff4da: startup date [Fri Dec 30 13:55:42 CST 2016]; root of context hierarchy
+2016-12-30 13:55:43.891  INFO 180936 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2016-12-30 13:55:43.899  INFO 180936 --- [main] org.qingqing.crawler.demo.RunCommanLine  : current version is : {} 1.0.0
+2016-12-30 13:55:43.899  INFO 180936 --- [main] org.qingqing.crawler.demo.RunCommanLine  : start total file load
+2016-12-30 13:55:43.899  INFO 180936 --- [main] o.q.c.demo.crawler.domain.PagedUrl       : convert paged url finish,  paged url is :http://search.zxxk.com/Search1.aspx?keyword=&typeid=1&orderby=score&pagesize=10&isprecise=0&onlytitle=1&dontsave=0&SelectTypeID=3&provinceid=4&year=2017&isfree=1
+2016-12-30 13:55:50.478  INFO 180936 --- [main] o.q.c.demo.crawler.FileCrawlerService    : page :http://search.zxxk.com/Search1.aspx?keyword=&typeid=1&orderby=score&pagesize=10&isprecise=0&onlytitle=1&dontsave=0&SelectTypeID=3&provinceid=4&year=2017&isfree=1, total size is :1
+2016-12-30 13:55:50.479  INFO 180936 --- [main] o.q.c.demo.crawler.FileCrawlerService    : start analyse file download url, pageNumber:1 targetPage:http://search.zxxk.com/Search1.aspx?keyword=&typeid=1&orderby=score&pagesize=10&isprecise=0&onlytitle=1&dontsave=0&SelectTypeID=3&provinceid=4&year=2017&isfree=1&page=1
+2016-12-30 13:56:00.869  INFO 180936 --- [main] o.q.c.demo.crawler.FileCrawlerManager    : success load file, file :2017届上海市普陀区高三一模语文试题及答案【含评分标准】.doc
+2016-12-30 13:56:04.069  INFO 180936 --- [main] o.q.c.demo.crawler.FileCrawlerManager    : success load file, file :【百强名校】上海市华师大二附中2016-2017学年高一（上）12月份月考数学卷（缺答案）.docx

@@ -25,7 +25,11 @@ public class RunCommanLine implements CommandLineRunner{
     @Autowired
     private FileCrawlerManager fileCrawlerManager;
 
+    @Autowired
+    private MyConfiguration myConfiguration;
+
     public void run(String... args) throws Exception {
+        logger.info("current version is : {} " + myConfiguration.getVersion());
         if (args.length != 1){
             logger.error("input args not found, please input args");
             return;
