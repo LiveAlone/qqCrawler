@@ -22,6 +22,7 @@ qingqing:
     - <a data-xop-login id="goDownload" rel="nofollow" href=".{0,100}" data-download:" data-download
     - <a data-xop-login id="goDownload" href=".{0,100}" data-download:" data-download
     - <a data-xop-login href=".{0,100}" id=":" id="
+    - <a class="download btn" href=".{0,100}" data-xop-login target="_blank:" data-xop-login target="_blank
   targetPage:
 #  4,2017,0,101 (上海， 2017年， 免费， 开学考试试卷)
     - 4,2016,2,101
