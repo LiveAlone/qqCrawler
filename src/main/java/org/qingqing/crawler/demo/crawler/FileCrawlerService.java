@@ -21,6 +21,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -213,4 +214,16 @@ public class FileCrawlerService {
             this.endTag = endTag;
         }
     }
+
+//    public static void main(String[] args) throws Exception {
+//        // test proxy is useful
+//        HttpHost proxy = new HttpHost("172.20.13.103", 1081);
+//        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+//        HttpGet httpGet = new HttpGet("http://www.sina.com.cn/");
+//        HttpResponse response =
+//                HttpClients.custom()
+//                        .setRoutePlanner(routePlanner)
+//                        .build().execute(httpGet);
+//        System.out.println(new String(IOUtils.toByteArray(response.getEntity().getContent())));
+//    }
 }

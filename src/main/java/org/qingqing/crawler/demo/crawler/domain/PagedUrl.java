@@ -22,6 +22,10 @@ public class PagedUrl {
 
     private static final String isMoneyTag = "&ismoney=1";
 
+    private static final String ispoint = "&ispoint=1";
+
+    private static final String issupply = "&issupply=1";
+
     private static final String provinceTag = "&provinceid=";
 
     private static final String yearTag = "&year=";
@@ -82,6 +86,10 @@ public class PagedUrl {
             sb.append(isFreeTag);
         }else if (isFreeConfig.equals("1")){
             sb.append(isMoneyTag);
+        }else if (isFreeConfig.equals("2")){
+            sb.append(ispoint);
+        }else if (isFreeConfig.equals("3")){
+            sb.append(issupply);
         }else {
             logger.error("target page config error, charge filed error, auto ignore, targetPage:{}", targetPage);
             return null;
@@ -145,6 +153,22 @@ public class PagedUrl {
                 .append("/").append(cateString == null ? "unknow" : cateString )
                 .append("/").append(fileName)
                 .toString();
+    }
+
+    private String chargeToString(String charge){
+        if (charge.equals("0")){
+            return "免费";
+        }
+        if (charge.equals("1")){
+            return "储值";
+        }
+        if(charge.equals("2")){
+            return "点数";
+        }
+        if (charge.equals("3")){
+            return "特供";
+        }
+        return "unknown";
     }
 
     public static class FileLoadResult{
