@@ -34,3 +34,4 @@ money/.*
 free/.*
 flyway.properties
 _book/
+*.tar.gz
